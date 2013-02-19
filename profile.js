@@ -1,15 +1,20 @@
-var Recode = (function () {
-    function Recode() {
+var Record = (function () {
+    function Record(name) {
         this.name = "";
+        this.userAgent = navigator.userAgent;
         this.count = 0;
         this.total = 0;
+        this.max = 0;
+        this.min = 0;
+        this.average = 0;
+        this.name = name;
     }
-    return Recode;
+    return Record;
 })();
 var Profiler = (function () {
     function Profiler() {
         this.keys = [];
-        this.recodes = [];
+        this.records = [];
     }
     Profiler.prototype.registMethod = function (object, property, name) {
         var _this = this;
@@ -21,15 +26,19 @@ var Profiler = (function () {
         }
         var key = name + "." + property;
         this.keys.push(key);
-        this.recodes[key] = [];
-        object[property] = (function (__method, __timeRecord) {
+        this.records[key] = new Record(key);
+        object[property] = (function (__method, __record) {
             return function () {
                 var start = (new Date()).getTime();
                 var rv = __method.apply(_this, arguments);
-                __timeRecord.push((new Date()).getTime() - start);
+                var time = ((new Date()).getTime() - start);
+                __record.count++;
+                __record.total += time;
+                __record.max = __record.max > time ? __record.max : time;
+                __record.min = __record.min > 0 && __record.min < time ? __record.min : time;
                 return rv;
             }
-        })(object[property], this.recodes[key]);
+        })(object[property], this.records[key]);
     };
     Profiler.prototype.registObject = function (object, name) {
         for(var property in object) {
@@ -37,12 +46,9 @@ var Profiler = (function () {
         }
     };
     Profiler.prototype.getResult = function (key) {
-        var rec = new Recode();
-        var recs = this.recodes[key];
-        rec.name = key;
-        rec.count = recs.length;
-        for(var i = 0; i < recs.length; i++) {
-            rec.total += recs[i];
+        var rec = this.records[key];
+        if(rec.count > 0) {
+            rec.average = rec.total / rec.count;
         }
         return rec;
     };
@@ -52,6 +58,27 @@ var Profiler = (function () {
             recs.push(this.getResult(this.keys[i]));
         }
         return recs;
+    };
+    Profiler.prototype.encodeFormComponent = function (value) {
+        return encodeURIComponent(value).replace(/%20/g, "+");
+    };
+    Profiler.prototype.encodeFormParam = function (name, value) {
+        return this.encodeFormComponent(name) + "=" + this.encodeFormComponent(value);
+    };
+    Profiler.prototype.encodeHTMLForm = function (data) {
+        var params = [];
+        for(var property in data) {
+            params.push(this.encodeFormParam(property, data[property].toString()));
+        }
+        return params.join("&");
+    };
+    Profiler.prototype.sendLog = function (obj, target) {
+        var request = new XMLHttpRequest();
+        request.open("POST", target);
+        request.send(JSON.stringify({
+            method: "DumpJSLog",
+            params: obj
+        }));
     };
     return Profiler;
 })();
