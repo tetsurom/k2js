@@ -1,5 +1,5 @@
-import("JavaScript.Document")
-import("JavaScript.JQuery")
+import("JavaScript.Document");
+import("JavaScript.JQuery");
 
 int fibo(int n){
 	if(n<3){

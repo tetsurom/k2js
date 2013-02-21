@@ -1,4 +1,5 @@
-//import("Syntax.Null");
+// JSM params prof=main
+// JSM profile target = main
 //import("JavaScript.Document");
 //import("JavaScript.JQuery");
 var fibo = function(n) {
@@ -18,5 +19,3 @@ var main = function() {
     jQuery("#myList").append(li);
 }
 profiler.registMethod(window, "main", "window");
-profiler.registMethod(window, "fibo", "window");
-
