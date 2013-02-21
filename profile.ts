@@ -78,9 +78,28 @@ class Profiler {
 	sendLog(obj : Object, target : string) : void{
 		var request = new XMLHttpRequest();
 		request.open("POST", target);
-		//request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		//request.send(this.encodeHTMLForm(obj));
 		request.send(JSON.stringify({method:"DumpJSLog", params:obj}));
+	}
+
+	sendLogByForm(obj : Object, target : string) : void{
+		var iframe : any = document.createElement("iframe");
+		var uniqueStr = "IFRAME_"+((new Date).getTime());
+		document.body.appendChild(iframe);
+		iframe.style.display = "none";
+		iframe.contentWindow.name = uniqueStr;
+
+		var form : any = document.createElement("form");
+		form.target = uniqueStr;
+		form.action = target;
+		form.method = "POST";
+
+		var input : any = document.createElement("imput");
+		input.type  = "hidden";
+		input.value = JSON.stringify({method:"DumpJSLog", params:obj});
+		form.appendChild(input);
+
+		document.body.appendChild(form);
+		form.submit();
 	}
 }
 

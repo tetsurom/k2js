@@ -80,6 +80,26 @@ var Profiler = (function () {
             params: obj
         }));
     };
+    Profiler.prototype.sendLogByForm = function (obj, target) {
+        var iframe = document.createElement("iframe");
+        var uniqueStr = "IFRAME_" + ((new Date()).getTime());
+        document.body.appendChild(iframe);
+        iframe.style.display = "none";
+        iframe.contentWindow.name = uniqueStr;
+        var form = document.createElement("form");
+        form.target = uniqueStr;
+        form.action = target;
+        form.method = "POST";
+        var input = document.createElement("imput");
+        input.type = "hidden";
+        input.value = JSON.stringify({
+            method: "DumpJSLog",
+            params: obj
+        });
+        form.appendChild(input);
+        document.body.appendChild(form);
+        form.submit();
+    };
     return Profiler;
 })();
 var profiler = new Profiler();
