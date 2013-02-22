@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<canvas id="myCanvas" width="465", height="465"></canvas>
+
+<button onclick="console.log(profiler.getAllResults())">GetProf</button>
+<button onclick="console.log(profiler.sendLog(profiler.getAllResults(), 'http://'+location.hostname+':8080/'))">SendProf</button>
+
+<script type="text/javascript" src="jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="profile.js"></script>
+<script type="text/javascript" src="demo2.js"></script>
+</body>
+</html>
