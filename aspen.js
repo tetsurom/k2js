@@ -50,10 +50,14 @@ if (!String.prototype.repeat) {
 }
 
 function sprintf() {
-	return String.prototype.sprintf.appry(arguments[0], arguments.slice(1));
+	var args = []
+	for(var i = 1; i < arguments.length; ++i){
+		args.push(arguments[i]);
+	}
+	return String.prototype.sprintf.apply(arguments[0], args);
 }
 
 function printf() {
-	console.log(String.prototype.sprintf.appry(arguments[0], arguments.slice(1)));
+	console.log(sprintf.apply(null, arguments));
 }
 
