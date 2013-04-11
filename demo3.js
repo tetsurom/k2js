@@ -13,14 +13,14 @@ var intervalHandler = function() {
     context.clearRect(0.0000, 0.0000, 400.0000, 400.0000);
     var x_1 = (CENTER_X+(100*Math.cos(n)));
     var y_2 = (CENTER_Y+(100*Math.sin(n)));
-    var i_3 = 0;
-    while((i_3<3)) {
+    var i_3 = 1;
+    while((i_3<4)) {
         context.beginPath();
         context.lineWidth = 1.0000;
-        context.moveTo(20.0000, 20.0000);
-        var x_4 = (CENTER_X+(100*Math.cos((n+(i_3*2.0944)))));
-        var y_5 = (CENTER_Y+(100*Math.sin((n+(i_3*2.0944)))));
-        context.lineTo(x_4, y_5);
+        context.moveTo(x_1, y_2);
+        var x_1 = (CENTER_X+(100*Math.cos((n+(i_3*2.0944)))));
+        var y_2 = (CENTER_Y+(100*Math.sin((n+(i_3*2.0944)))));
+        context.lineTo(x_1, y_2);
         context.stroke();
         var i_3 = (i_3+1);
     }

@@ -20,13 +20,13 @@ void intervalHandler(){
 	float x = CENTER_X + 100 * Math.cos(n);
 	float y = CENTER_Y + 100 * Math.sin(n);
 	
-	int i = 0;
-	while(i < 3) {
+	int i = 1;
+	while(i < 4) {
 		context.beginPath();
 		context.lineWidth = 1;
-		context.moveTo(20, 20);
-		float x = CENTER_X + 100 * Math.cos(n + i * 2.0944);
-		float y = CENTER_Y + 100 * Math.sin(n + i * 2.0944);
+		context.moveTo(x, y);
+		x = CENTER_X + 100 * Math.cos(n + i * 2.0944);
+		y = CENTER_Y + 100 * Math.sin(n + i * 2.0944);
 		context.lineTo(x, y);
 		context.stroke();
 		i = i + 1;
